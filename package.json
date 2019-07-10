@@ -1,0 +1,74 @@
+{
+  "name": "tmpl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "Maxim Pozhidayev <pogidaevmo@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "concurrently \"npm run start --prefix src/client\" \"nodemon --exec babel-node bin/dev\" ",
+    "in": "cd src/client && npm i && cd ../.. && npm i",
+    "lint-staged": "lint-staged",
+    "build": "rimraf ./dist && babel -d ./dist/server ./src/server -s && cd src/client && npm run build",
+    "start": "npm run build && node bin/www"
+  },
+  "keywords": [],
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.6.4",
+    "morgan": "^1.9.1",
+    "passport": "^0.4.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/register": "^7.4.4",
+    "concurrently": "^4.1.0",
+    "copyfiles": "^2.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.0.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-prettier": "^4.3.0",
+    "eslint-plugin-import": "^2.17.3",
+    "lint-staged": "^8.2.0",
+    "nodemon": "^1.19.1",
+    "pre-commit": "^1.2.2",
+    "rimraf": "^2.6.3"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env"
+      ]
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "airbnb-base",
+      "prettier"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "ecmaFeatures": {
+        "experimentalObjectRestSpread": true
+      }
+    },
+    "env": {
+      "node": true,
+      "es6": true,
+      "mocha": true
+    },
+    "rules": {
+      "import/prefer-default-export": 0
+    }
+  },
+  "pre-commit": "lint-staged",
+  "lint-staged": {
+    "*.js": "eslint src/server"
+  }
+}
