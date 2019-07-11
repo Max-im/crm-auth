@@ -14,7 +14,10 @@ logger("dev");
 
 // db connect
 mongoose
-  .connect(process.env.DB_URL, { useNewUrlParser: true })
+  .connect(process.env.DB_URL, {
+    useNewUrlParser: true,
+    useFindAndModify: false
+  })
   // eslint-disable-next-line
   .then(() => console.log("db connect"))
   // eslint-disable-next-line

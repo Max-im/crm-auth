@@ -23,6 +23,7 @@ export class index extends Component {
             <p>{user.name}</p>
             <p>{user.email}</p>
             <img src={user.avatar} alt={user.name} />
+            <i className="fas fa-sign-out-alt" onClick={this.props.onLogOut} />
           </div>
         )}
 

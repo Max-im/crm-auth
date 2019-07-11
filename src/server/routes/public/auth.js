@@ -1,12 +1,8 @@
 import { Router } from "express";
-import User from "../../models/User";
+import { returnExistingUser, createNewUser } from "../../controllers/auth";
 
 const router = Router();
 
-router.post("/", async (req, res) => {
-  User.create(req.body)
-    .then(data => res.json(data))
-    .catch(err => res.status(400).json(err));
-});
+router.post("/", returnExistingUser, createNewUser);
 
 module.exports = router;

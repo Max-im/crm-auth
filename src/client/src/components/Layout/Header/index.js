@@ -1,15 +1,18 @@
 import React from "react";
 import MainMenu from "../MainMenu";
 import Auth from "../Auth";
+import "./style.scss";
 
 export default function index() {
   return (
     <header className="header">
-      {/* menu */}
-      <MainMenu />
+      <div className="container header__body">
+        {/* menu */}
+        <MainMenu />
 
-      {/* auth */}
-      <Auth />
+        {/* auth */}
+        <Auth />
+      </div>
     </header>
   );
 }
