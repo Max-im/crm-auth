@@ -1,10 +1,12 @@
 import { Router } from "express";
 import auth from "./public/auth";
-import data from "./admin/data";
+import admin from "./protected/admin";
+import moderator from "./protected/moderator";
 
 const router = Router();
 
 router.use("/auth", auth);
-router.use("/data", data);
+router.use("/admin", admin);
+router.use("/moderator", moderator);
 
 module.exports = router;

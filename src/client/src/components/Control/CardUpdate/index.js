@@ -2,19 +2,27 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { cardUpdate } from "../../../store/actions/admin";
+import { cardUpdate, getUser } from "../../../store/actions/admin";
+import RoleControl from "../RoleControl";
 
 export class index extends Component {
   state = { index: "", text: "", name: "" };
 
   componentDidMount() {
     const { id } = this.props.match.params;
-    const theUser = this.props.data.usersData.find(item => item._id === id);
-    this.setState({
-      index: theUser.index,
-      text: theUser.text,
-      name: theUser.personal.name
-    });
+    this.props.getUser(id);
+  }
+
+  componentDidUpdate(prev) {
+    if (
+      (!prev.data.user && this.props.data.user) ||
+      (prev.data.user &&
+        prev.data.user._id &&
+        prev.data.user._id !== this.props.data.user._id)
+    ) {
+      const { index, text, personal } = this.props.data.user;
+      this.setState({ index, text, name: personal.name });
+    }
   }
 
   onSubmit(e) {
@@ -29,26 +37,34 @@ export class index extends Component {
 
   static propTypes = {
     data: PropTypes.object.isRequired,
-    cardUpdate: PropTypes.func.isRequired
+    cardUpdate: PropTypes.func.isRequired,
+    getUser: PropTypes.func.isRequired
   };
 
   render() {
+    const { user } = this.props.data;
     return (
       <div>
         <div className="container">
-          <form onSubmit={this.onSubmit.bind(this)}>
-            {Object.keys(this.state).map(key => (
-              <input
-                key={key}
-                type="text"
-                name={key}
-                value={this.state[key]}
-                onChange={this.onChange.bind(this)}
-              />
-            ))}
+          {user && (
+            <>
+              <form onSubmit={this.onSubmit.bind(this)}>
+                {Object.keys(this.state).map(key => (
+                  <input
+                    key={key}
+                    type="text"
+                    name={key}
+                    value={this.state[key]}
+                    onChange={this.onChange.bind(this)}
+                  />
+                ))}
 
-            <button type="submit">Update</button>
-          </form>
+                <button type="submit">Update</button>
+              </form>
+
+              <RoleControl />
+            </>
+          )}
         </div>
       </div>
     );
@@ -61,5 +77,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { cardUpdate }
+  { cardUpdate, getUser }
 )(withRouter(index));

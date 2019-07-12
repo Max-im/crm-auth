@@ -10,7 +10,7 @@ import store from "./store/store";
 import { SET_USER } from "./store/actions/constants";
 
 const userCookie = read_cookie("crm");
-if (userCookie._id) {
+if (Object.keys(userCookie).length > 0) {
   store.dispatch({ type: SET_USER, payload: userCookie });
   setAuthToken(userCookie);
   // TODO - check expired date

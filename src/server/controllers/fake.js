@@ -34,7 +34,8 @@ export const createMockData = async (req, res) => {
     const group = groupData[0]._id;
     const created = faker.date.past();
     const personal = {
-      name: faker.name.findName()
+      name: faker.name.findName(),
+      email: faker.internet.email()
     };
 
     fakeData.push({ index, text, group, avatar, created, personal });

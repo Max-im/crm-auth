@@ -10,6 +10,7 @@ export class index extends Component {
     text: "",
     avatar: "",
     created: "",
+    email: "",
     name: "",
     group: ""
   };
@@ -26,10 +27,14 @@ export class index extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    this.props.createData(this.state);
+    const { group: stateGroup } = this.state;
+    const { groups } = this.props.data;
+    const group = stateGroup === "" ? groups[0]._id : stateGroup;
+    this.props.createData({ ...this.state, group });
     this.setState({
       index: "",
       name: "",
+      email: "",
       text: "",
       avatar: "",
       created: "",

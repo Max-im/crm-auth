@@ -20,9 +20,7 @@ export class index extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
-
 export default connect(
-  mapStateToProps,
+  null,
   { onCardDelete }
 )(index);

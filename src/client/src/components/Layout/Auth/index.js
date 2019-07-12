@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { GoogleLogin } from "react-google-login";
 import { onLogin, onLogOut, onLogError } from "../../../store/actions/auth";
+import "./style.scss";
 
 export class index extends Component {
   static propTypes = {
@@ -20,9 +21,12 @@ export class index extends Component {
         {/* show user data */}
         {isAuth && (
           <div>
-            <p>{user.name}</p>
-            <p>{user.email}</p>
-            <img src={user.avatar} alt={user.name} />
+            <p>{user.personal.name}</p>
+            <img
+              className="auth__img"
+              src={user.avatar}
+              alt={user.personal.name}
+            />
             <i className="fas fa-sign-out-alt" onClick={this.props.onLogOut} />
           </div>
         )}

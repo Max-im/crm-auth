@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
+import "./style.scss";
 
 export class indes extends Component {
   static propTypes = {
@@ -22,13 +23,13 @@ export class indes extends Component {
           {["admin", "moderator"].includes(role) && (
             <li className="mainMenu__item">
               <NavLink to="/admin" className="mainMenu__link">
-                users
+                admin
               </NavLink>
             </li>
           )}
-          {["analyst"].includes(role) && (
+          {["admin", "analyst"].includes(role) && (
             <li className="mainMenu__item">
-              <NavLink to="/analist" className="mainMenu__link">
+              <NavLink to="/analyst" className="mainMenu__link">
                 analyst
               </NavLink>
             </li>

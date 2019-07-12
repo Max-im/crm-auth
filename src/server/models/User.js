@@ -1,14 +1,17 @@
 import { Schema, model } from "mongoose";
 import Role from "./Role";
+import Group from "./Group";
 
 const UserSchema = new Schema({
   index: { type: Number },
   text: { type: String },
+
   role: { type: Schema.Types.ObjectId, ref: "role" },
   gId: { type: String },
   avatar: { type: String },
   personal: {
-    name: { type: String, required: true }
+    name: { type: String, required: true },
+    email: { type: String, required: true }
   },
   group: { type: Schema.Types.ObjectId, ref: "groups" },
   marks: [
@@ -21,13 +24,21 @@ const UserSchema = new Schema({
 });
 
 UserSchema.pre("save", function(next) {
-  if (!this.isNew) return next();
+  if (!this.isNew) next();
   const self = this;
 
-  Role.findOne({ name: "user" }, function(err, results) {
+  // init random group
+  Group.aggregate([{ $sample: { size: 1 } }], function(err, results) {
     if (err) next(err);
-    self.role = results._id;
-    next();
+
+    self.group = results[0]._id;
+
+    // init role user
+    Role.findOne({ name: "user" }, function(err, results) {
+      if (err) next(err);
+      self.role = results._id;
+      next();
+    });
   });
 });
 
