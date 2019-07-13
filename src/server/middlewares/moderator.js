@@ -3,13 +3,12 @@ import User from "../models/User";
 export const getUserData = (req, res, next) => {
   const { id } = req.params;
   const { sort } = req.query;
-  console.log(sort);
+
   let sortBy = "id";
   if (sort === "date") sortBy = { datefield: 1 };
   if (sort === "name") sortBy = "personal.name";
   if (sort === "index") sortBy = "index";
 
-  console.log(sortBy);
   User.find()
     .populate("group")
     .populate("role")
@@ -24,7 +23,7 @@ export const getUserData = (req, res, next) => {
 };
 
 export const getUsersNum = (req, res) => {
-  User.count({})
+  User.estimatedDocumentCount({})
     .then(num => res.json({ num }))
     .catch(err => res.status(400).json(err));
 };

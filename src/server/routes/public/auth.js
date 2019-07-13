@@ -1,6 +1,6 @@
 import { Router } from "express";
 import authInputValidation from "../../validation/auth";
-import { openSession, closeSession } from "../../middlewares/common";
+import { openSession, closeSession } from "../../middlewares/sessions";
 import { attachUser } from "../../middlewares/permissions";
 import {
   returnExistingUser,

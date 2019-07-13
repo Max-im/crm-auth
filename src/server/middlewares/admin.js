@@ -1,6 +1,7 @@
 import User from "../models/User";
 import Group from "../models/Group";
 import Role from "../models/Role";
+import { storeSessionRequestData } from "./sessions";
 
 export const getSingleUser = (req, res, next) => {
   const { id } = req.params;
@@ -90,6 +91,10 @@ export const updateUserRole = (req, res, next) => {
 export const deleteUserData = (req, res) => {
   const { id } = req.params;
   User.findOneAndRemove({ _id: id })
-    .then(() => res.end())
+    .then(() => {
+      storeSessionRequestData(req);
+
+      res.end();
+    })
     .catch(err => res.status(400).json(err));
 };

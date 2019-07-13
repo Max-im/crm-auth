@@ -9,7 +9,8 @@ const SessionSchema = new Schema({
     {
       time: { type: Date, default: Date.now },
       method: { type: String, required: true },
-      long: { type: String, required: true }
+      url: { type: String, required: true },
+      long: { type: Number, required: true }
     }
   ]
 });

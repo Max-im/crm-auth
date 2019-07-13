@@ -39,7 +39,8 @@ const checkPermissions = (req, res, next, alowsArr) => {
         if (role !== decoded.user.role) return res.status(401).json(err);
         if (!alowsArr.includes(role)) return res.status(401).json(err);
         req.user = user;
-        req.user.session = decoded.user.session;
+        req.startTimestamp = new Date().getTime();
+        req.session = decoded.user.session;
         return next();
       })
       .catch(err => res.status(401).json(err));
@@ -66,7 +67,7 @@ export const attachUser = (req, res, next) => {
       .then(user => {
         if (!user) return res.status(401).json(err);
         req.user = user;
-        req.user.session = decoded.user.session;
+        req.session = decoded.user.session;
         return next();
       })
       .catch(err => res.status(401).json(err));
