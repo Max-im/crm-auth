@@ -2,22 +2,21 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import jwt_decode from "jwt-decode";
-import { read_cookie, delete_cookie } from "sfcookies";
+import { read_cookie } from "sfcookies";
 import { setAuthToken } from "./store/actions/utils";
 
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 import store from "./store/store";
 import { SET_USER } from "./store/actions/constants";
+import { onLogOut } from "./store/actions/auth";
 
 try {
   const access_token = read_cookie("crm");
   const decoded = jwt_decode(access_token);
   if (decoded && decoded.exp) {
-    if (decoded.exp * 1000 < Date.now()) {
-      delete_cookie("crm");
-      store.dispatch({ type: SET_USER, payload: {} });
-    }
+    if (decoded.exp * 1000 < Date.now()) store.dispatch(onLogOut());
+
     store.dispatch({ type: SET_USER, payload: decoded.user });
     setAuthToken(access_token);
   }

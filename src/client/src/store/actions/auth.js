@@ -28,9 +28,14 @@ export const onLogin = response => dispatch => {
  * LOGOUT
  */
 export const onLogOut = () => dispatch => {
-  dispatch({ type: SET_USER, payload: {} });
-  delete_cookie("crm");
-  setAuthToken(false);
+  axios
+    .put("/auth")
+    .then(() => {
+      dispatch({ type: SET_USER, payload: {} });
+      delete_cookie("crm");
+      setAuthToken(false);
+    })
+    .catch(err => console.error(err.response.data));
 };
 
 /**

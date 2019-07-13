@@ -36,7 +36,7 @@ export const createNewUser = async (req, res, next) => {
  * @description sign new auth token and return it on frontend
  */
 export const generateToken = (req, res) => {
-  const { theUser } = req.body;
+  const { theUser, sessionId } = req.body;
   const access_token = jwt.sign(
     {
       sub: theUser._id,
@@ -44,7 +44,8 @@ export const generateToken = (req, res) => {
         name: theUser.personal.name,
         email: theUser.personal.email,
         avatar: theUser.avatar,
-        role: theUser.role.name
+        role: theUser.role.name,
+        session: sessionId
       }
     },
     process.env.SECRET_OR_KEY,
