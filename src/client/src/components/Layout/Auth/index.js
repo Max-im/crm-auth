@@ -21,12 +21,8 @@ export class index extends Component {
         {/* show user data */}
         {isAuth && (
           <div>
-            <p>{user.personal.name}</p>
-            <img
-              className="auth__img"
-              src={user.avatar}
-              alt={user.personal.name}
-            />
+            <p>{user.name}</p>
+            <img className="auth__img" src={user.avatar} alt={user.name} />
             <i className="fas fa-sign-out-alt" onClick={this.props.onLogOut} />
           </div>
         )}

@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
+import jwt_decode from "jwt-decode";
 import { read_cookie, delete_cookie } from "sfcookies";
 import { setAuthToken } from "./store/actions/utils";
 
@@ -9,11 +10,19 @@ import * as serviceWorker from "./serviceWorker";
 import store from "./store/store";
 import { SET_USER } from "./store/actions/constants";
 
-const userCookie = read_cookie("crm");
-if (Object.keys(userCookie).length > 0) {
-  store.dispatch({ type: SET_USER, payload: userCookie });
-  setAuthToken(userCookie);
-  // TODO - check expired date
+try {
+  const access_token = read_cookie("crm");
+  const decoded = jwt_decode(access_token);
+  if (decoded && decoded.exp) {
+    if (decoded.exp * 1000 < Date.now()) {
+      delete_cookie("crm");
+      store.dispatch({ type: SET_USER, payload: {} });
+    }
+    store.dispatch({ type: SET_USER, payload: decoded.user });
+    setAuthToken(access_token);
+  }
+} catch (err) {
+  // show auth error
 }
 
 ReactDOM.render(
