@@ -1,6 +1,5 @@
 import { Schema, model } from "mongoose";
-import Role from "./Role";
-import Group from "./Group";
+import { userPreSave } from "./hooks";
 
 const UserSchema = new Schema({
   index: { type: Number },
@@ -23,23 +22,6 @@ const UserSchema = new Schema({
   created: { type: Date, default: Date.now }
 });
 
-UserSchema.pre("save", function(next) {
-  if (!this.isNew) next();
-  const self = this;
-
-  // init random group
-  Group.aggregate([{ $sample: { size: 1 } }], function(err, results) {
-    if (err) next(err);
-
-    self.group = results[0]._id;
-
-    // init role user
-    Role.findOne({ name: "user" }, function(err, results) {
-      if (err) next(err);
-      self.role = results._id;
-      next();
-    });
-  });
-});
+UserSchema.pre("save", userPreSave);
 
 module.exports = model("user", UserSchema);

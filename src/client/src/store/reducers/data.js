@@ -97,7 +97,6 @@ export default (state = initialState, action) => {
         ...state,
         usersData: state.usersData.map(item => {
           if (item._id === action.payload._id) {
-            console.log("here");
             return action.payload;
           }
           return item;

@@ -22,7 +22,7 @@ export const getData = (page, query) => dispatch => {
   axios
     .get(url)
     .then(({ data }) => dispatch({ type: GET_DATA, payload: data }))
-    .catch(err => console.error(err.response.data));
+    .catch(err => console.error(err));
 };
 
 /**

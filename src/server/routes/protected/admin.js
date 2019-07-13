@@ -1,6 +1,9 @@
 import { Router } from "express";
-import { isAdmin, isAdminOnly } from "../../controllers/permissions";
-import { createInitGroups, createMockData } from "../../controllers/fake";
+import { isAdminOnly } from "../../middlewares/permissions";
+import createUserValidation from "../../validation/createUser";
+import updateUserValidation from "../../validation/updateUser";
+import { createInitGroups, createMockData } from "../../middlewares/fake";
+import { returnFormatedUser } from "../../middlewares/common";
 import {
   getGroups,
   getRoles,
@@ -10,9 +13,7 @@ import {
   createData,
   updateData,
   deleteUserData
-} from "../../controllers/admin";
-
-import { returnFormatedUser } from "../../controllers/common";
+} from "../../middlewares/admin";
 
 const router = Router();
 
@@ -34,12 +35,24 @@ router.get("/roles", isAdminOnly, getRoles);
 /**
  * Create new dataset item
  */
-router.post("/", isAdminOnly, createData, returnFormatedUser);
+router.post(
+  "/",
+  isAdminOnly,
+  createUserValidation,
+  createData,
+  returnFormatedUser
+);
 
 /**
  * Update dataset item
  */
-router.put("/", isAdminOnly, updateData, returnFormatedUser);
+router.put(
+  "/",
+  isAdminOnly,
+  updateUserValidation,
+  updateData,
+  returnFormatedUser
+);
 
 /**
  * Update user role

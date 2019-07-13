@@ -53,6 +53,7 @@ export class index extends Component {
                   <input
                     key={key}
                     type="text"
+                    placeholder={key}
                     name={key}
                     value={this.state[key]}
                     onChange={this.onChange.bind(this)}

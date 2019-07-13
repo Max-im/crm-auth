@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { isModerator } from "../../controllers/permissions";
-import { getUserData, getUsersNum } from "../../controllers/moderator";
-import { returnFormatedUser } from "../../controllers/common";
+import { isModerator } from "../../middlewares/permissions";
+import { getUserData, getUsersNum } from "../../middlewares/moderator";
+import { returnFormatedUser } from "../../middlewares/common";
 
 const router = Router();
 

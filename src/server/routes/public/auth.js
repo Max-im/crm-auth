@@ -1,8 +1,19 @@
 import { Router } from "express";
-import { returnExistingUser, createNewUser } from "../../controllers/auth";
+import authInputValidation from "../../validation/auth";
+import {
+  returnExistingUser,
+  createNewUser,
+  generateToken
+} from "../../middlewares/auth";
 
 const router = Router();
 
-router.post("/", returnExistingUser, createNewUser);
+router.post(
+  "/",
+  authInputValidation,
+  returnExistingUser,
+  createNewUser,
+  generateToken
+);
 
 module.exports = router;
