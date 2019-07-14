@@ -118,18 +118,3 @@ export const cardUpdate = (updateData, history) => dispatch => {
     })
     .catch(err => console.error(err.response.data));
 };
-
-/**
- * @access  Admin
- */
-export const addMockData = () => dispatch => {
-  let i = 0;
-  axios
-    .post("/admin/add-mock-data")
-    .then(({ data }) => {
-      if (i > 5000) return;
-      i++;
-      dispatch(addMockData());
-    })
-    .catch(err => console.error(err.response.data));
-};

@@ -1,12 +1,23 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
+import { getUserNum } from "../../../store/actions/admin";
 import "./style.scss";
+import Pagination from "../Pagination";
 
 export class index extends Component {
+  componentDidMount() {
+    this.props.getUserNum();
+  }
+
+  static propTypes = {
+    getUserNum: PropTypes.func.isRequired
+  };
+
   render() {
-    const { number, baseUrl } = this.props;
-    const pagesNum = Math.ceil(number / 100);
+    const { userNum, sortBy } = this.props.data;
+    const pagesNum = Math.ceil(userNum / 100);
     const { id: activePage } = this.props.match.params;
 
     const allPages = [];
@@ -19,12 +30,12 @@ export class index extends Component {
     const pages = allPages.filter(v => v >= min && v <= max);
     return (
       <div>
-        {number && (
+        {userNum && (
           <ul className="pagination">
             {/* first page */}
             <li key="1">
               <Link
-                to={baseUrl + "1"}
+                to={"/admin/1?sort=" + sortBy}
                 className={
                   "pagination__page " +
                   (activePage - 0 === 1 && "pagination__page_active")
@@ -44,7 +55,7 @@ export class index extends Component {
                     "pagination__page " +
                     (activePage - 0 === page && "pagination__page_active")
                   }
-                  to={baseUrl + page}
+                  to={"/admin/" + page + "?sort=" + sortBy}
                 >
                   {page}
                 </Link>
@@ -59,7 +70,7 @@ export class index extends Component {
                   "pagination__page " +
                   (activePage - 0 === pagesNum && "pagination__page_active")
                 }
-                to={baseUrl + pagesNum}
+                to={"/admin/" + pagesNum + "?sort=" + sortBy}
               >
                 {pagesNum}
               </Link>
@@ -77,5 +88,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  {}
+  { getUserNum }
 )(withRouter(index));

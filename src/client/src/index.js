@@ -16,9 +16,10 @@ try {
   const decoded = jwt_decode(access_token);
   if (decoded && decoded.exp) {
     if (decoded.exp * 1000 < Date.now()) store.dispatch(onLogOut());
-
-    store.dispatch({ type: SET_USER, payload: decoded.user });
-    setAuthToken(access_token);
+    else {
+      store.dispatch({ type: SET_USER, payload: decoded.user });
+      setAuthToken(access_token);
+    }
   }
 } catch (err) {
   // show auth error

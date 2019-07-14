@@ -19,6 +19,6 @@ router.post(
   generateToken
 );
 
-router.put("/", attachUser, closeSession);
+router.get("/", attachUser, closeSession);
 
 module.exports = router;

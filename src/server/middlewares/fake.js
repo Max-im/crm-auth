@@ -3,8 +3,11 @@ import User from "../models/User";
 import Group from "../models/Group";
 
 export const createInitGroups = async (req, res, next) => {
-  const groupNum = await Group.find().countDocuments();
-  if (groupNum > 0) return next();
+  const groups = await Group.find();
+  const users = await User.aggregate([{ $sample: { size: 10 } }]);
+  req.body.usersIds = users.map(item => item._id);
+
+  if (groups.length > 0) return next();
 
   // generate fake groups
   const fakeGroups = [];
@@ -24,24 +27,52 @@ export const createInitGroups = async (req, res, next) => {
     .catch(err => res.status(400).json(err));
 };
 
-export const createMockData = async (req, res) => {
+export const createMockData = (req, res) => {
+  const { usersIds } = req.body;
+
   const fakeData = [];
-  while (fakeData.length < 100) {
-    const index = faker.random.number();
-    const text = faker.hacker.phrase();
-    const avatar = faker.image.avatar();
-    const groupData = await Group.aggregate([{ $sample: { size: 1 } }]);
-    const group = groupData[0]._id;
-    const created = faker.date.past();
-    const personal = {
-      name: faker.name.findName(),
-      email: faker.internet.email()
+  while (fakeData.length < 1000) {
+    const theUser = {
+      index: faker.random.number(),
+      text: faker.hacker.phrase(),
+      site: faker.internet.url(),
+      friends: usersIds.filter(() => Math.random() > 0.5),
+      hobby: { type: Array },
+      avatar: faker.image.avatar(),
+      age: faker.random.number(),
+      personal: {
+        name: faker.name.findName(),
+        email: faker.internet.email(),
+        phone: faker.phone.phoneNumber()
+      },
+      address: {
+        country: faker.address.country(),
+        countryCode: faker.address.countryCode(),
+        city: faker.address.city(),
+        state: faker.address.state()
+      },
+      experience: [1, 2, 3].map(() => ({
+        company: faker.company.companyName(),
+        title: faker.name.jobTitle(),
+        country: faker.address.country(),
+        countryCode: faker.address.countryCode(),
+        city: faker.address.city(),
+        state: faker.address.state()
+      })),
+      education: [1, 2].map(() => ({
+        school: faker.company.companyName(),
+        country: faker.address.country(),
+        countryCode: faker.address.countryCode(),
+        city: faker.address.city(),
+        state: faker.address.state()
+      })),
+      created: faker.date.past()
     };
 
-    fakeData.push({ index, text, group, avatar, created, personal });
+    fakeData.push(theUser);
   }
 
   User.create(fakeData)
-    .then(data => res.end("Created " + data.length))
+    .then(() => res.end())
     .catch(err => res.status(400).json(err));
 };

@@ -1,0 +1,29 @@
+.session {
+  &__item {
+    margin: 10px 0;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    padding: 15px;
+  }
+  &__body {
+    display: flex;
+  }
+}
+
+.request {
+  margin: 15px 0 0 0;
+  &__item {
+    display: flex;
+    margin: 0 0 0 30px;
+  }
+  &__date {
+    width: 200px;
+  }
+  &__method {
+    width: 100px;
+  }
+  &__url {
+    width: 300px;
+  }
+  &__long {
+  }
+}

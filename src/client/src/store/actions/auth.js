@@ -29,7 +29,7 @@ export const onLogin = response => dispatch => {
  */
 export const onLogOut = () => dispatch => {
   axios
-    .put("/auth")
+    .get("/auth")
     .then(() => {
       dispatch({ type: SET_USER, payload: {} });
       delete_cookie("crm");

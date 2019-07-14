@@ -39,7 +39,7 @@ export const createData = (req, res, next) => {
   };
   User.create(newUser)
     .then(user => {
-      req.body.theUser = user;
+      req.params.id = user._id;
       next();
     })
     .catch(err => res.status(400).json(err));

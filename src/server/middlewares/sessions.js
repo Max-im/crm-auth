@@ -11,13 +11,20 @@ export const openSession = (req, res, next) => {
 };
 
 export const storeSessionRequestData = req => {
-  const { method, url, session, startTimestamp } = req;
+  const { method, originalUrl, session, startTimestamp } = req;
   const long = new Date().getTime() - startTimestamp;
-  const request = { method, url, long };
+  const request = { method, url: originalUrl, long };
   Session.findOne({ _id: session }).then(item => {
-    item.requests.push(request);
+    item.requests.unshift(request);
     item.save();
   });
+};
+
+export const deleteUserSessions = (req, res, next) => {
+  const { id } = req.params;
+  Session.deleteMany({ user: id })
+    .then(() => next())
+    .catch(err => res.status(400).json({ err }));
 };
 
 export const closeSession = (req, res) => {

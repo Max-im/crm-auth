@@ -4,6 +4,8 @@ import createUserValidation from "../../validation/createUser";
 import updateUserValidation from "../../validation/updateUser";
 import { createInitGroups, createMockData } from "../../middlewares/fake";
 import { returnFormatedUser } from "../../middlewares/common";
+import { updateStat } from "../../middlewares/analyst";
+import { deleteUserSessions } from "../../middlewares/sessions";
 import {
   getGroups,
   getRoles,
@@ -40,6 +42,7 @@ router.post(
   isAdminOnly,
   createUserValidation,
   createData,
+  getSingleUser,
   returnFormatedUser
 );
 
@@ -50,6 +53,7 @@ router.put(
   "/",
   isAdminOnly,
   updateUserValidation,
+  updateStat,
   updateData,
   returnFormatedUser
 );
@@ -66,13 +70,8 @@ router.put(
 );
 
 /**
- * fill out data set of mock data
- */
-router.post("/add-mock-data", isAdminOnly, createInitGroups, createMockData);
-
-/**
  * Delete dataset item
  */
-router.delete("/:id", isAdminOnly, deleteUserData);
+router.delete("/:id", isAdminOnly, deleteUserSessions, deleteUserData);
 
 module.exports = router;

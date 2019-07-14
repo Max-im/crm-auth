@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
-import { getData, addMockData, onSetSort } from "../../../store/actions/admin";
+import { getData, onSetSort } from "../../../store/actions/admin";
 import "./style.scss";
 import CardControl from "../../Control/CardControl";
 import AddCard from "../../Control/AddCard";
-import Pagination from "../../Items/Pagination";
+import UsersPagination from "../../Items/UsersPag";
 
 export class index extends Component {
   componentDidMount() {
@@ -34,7 +34,6 @@ export class index extends Component {
 
   static propTypes = {
     getData: PropTypes.func.isRequired,
-    addMockData: PropTypes.func.isRequired,
     onSetSort: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired
@@ -83,7 +82,7 @@ export class index extends Component {
 
           {usersData && (
             <>
-              <Pagination />
+              <UsersPagination />
               <ul>
                 {usersData.map(item => (
                   <li className="card" key={item._id}>
@@ -101,7 +100,7 @@ export class index extends Component {
                 ))}
               </ul>
 
-              <Pagination />
+              <UsersPagination />
             </>
           )}
         </div>
@@ -117,5 +116,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getData, addMockData, onSetSort }
+  { getData, onSetSort }
 )(withRouter(index));

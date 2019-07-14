@@ -32,7 +32,13 @@ function App() {
 
           <AdminRoute path="/admin/:id" component={Admin} />
           <AdminRoute path="/card-update/:id" component={CardUpdate} />
-          <AnalystRoute path="/analyst" component={Analyst} />
+
+          <Route
+            exact
+            path="/analyst"
+            render={() => <Redirect to="/analyst/1" />}
+          />
+          <AnalystRoute path="/analyst/:id" component={Analyst} />
         </Switch>
       </div>
     </Router>
