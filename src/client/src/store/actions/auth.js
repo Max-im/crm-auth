@@ -21,7 +21,7 @@ export const onLogin = response => dispatch => {
       const decoded = jwt_decode(access_token);
       dispatch({ type: SET_USER, payload: decoded.user });
     })
-    .catch(err => console.error(err.response.data));
+    .catch(err => console.error(err));
 };
 
 /**
